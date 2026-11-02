@@ -1,0 +1,9 @@
+continent,avg_rms,avg_gap
+North America,0.766,113.59
+Oceania,0.736,98.3
+Antarctica,0.705,95.89
+South America,0.767,90.15
+Asia,0.721,89.96
+Oceanic/Other,0.653,87.15
+Africa,0.677,83.22
+Europe,0.729,56.91

@@ -17,13 +17,15 @@ global-seismic-trends/
 ├── requirements.txt
 ├── data/
 │   ├── raw_earthquakes.csv    # output of fetch_data.py
-│   └── clean_earthquakes.csv  # output of clean_data.py
+│   ├── clean_earthquakes.csv  # output of clean_data.py
+│   └── query_results/         # q01.csv … q30.csv (MySQL query outputs)
 ├── sql/
 │   └── analysis_queries.sql   # all 30 analytical queries
 ├── src/
 │   ├── fetch_data.py          # Step 1: USGS API retrieval (month by month)
 │   ├── clean_data.py          # Step 2: Pandas + Regex cleaning, derived columns
 │   ├── load_to_mysql.py       # Step 3: create table, insert with SQLAlchemy
+│   ├── export_results.py      # saves the 30 query results for the online dashboard
 │   └── queries.py             # the 30 queries (shared by app + SQL file)
 └── docs/
 ```
@@ -36,9 +38,14 @@ python src/fetch_data.py       # ~5 min, 120 API calls
 python src/clean_data.py
 python src/load_to_mysql.py    # needs MySQL running (root, no password by default)
 python src/queries.py          # regenerates sql/analysis_queries.sql
+python src/export_results.py   # saves the 30 MySQL query results to data/query_results/
 streamlit run app.py
 ```
 If your MySQL root user has a password: `export DB_PASSWORD=yourpassword` before running.
+
+**Two modes of the dashboard:**
+- **Local (with MySQL running):** every query runs live on MySQL.
+- **Online (Streamlit Community Cloud):** the cloud can't reach a local MySQL, so the app automatically shows the query results exported from MySQL (`data/query_results/`) and the cleaned dataset.
 
 ## 4. Methodology
 

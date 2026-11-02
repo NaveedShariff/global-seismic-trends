@@ -1,0 +1,16 @@
+country,shallow_quakes,deep_quakes,shallow_to_deep_ratio
+Iran,264.0,1.0,264.0
+Panama,249.0,1.0,249.0
+China,637.0,5.0,127.4
+Turkey,318.0,3.0,106.0
+Micronesia,101.0,2.0,50.5
+New Caledonia,262.0,6.0,43.67
+Taiwan,471.0,12.0,39.25
+Greece,312.0,9.0,34.67
+Loyalty Islands,388.0,19.0,20.42
+Guadeloupe,36.0,2.0,18.0
+Honduras,31.0,2.0,15.5
+Costa Rica,71.0,5.0,14.2
+North Island of New Zealand,28.0,2.0,14.0
+United States,815.0,98.0,8.32
+Russia,2400.0,304.0,7.89

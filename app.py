@@ -20,7 +20,14 @@ st.set_page_config(page_title="Global Seismic Trends", page_icon="🌍", layout=
 
 @st.cache_resource
 def get_engine():
-    return create_engine(DB_URL)
+    """Return a MySQL engine, or None if MySQL isn't reachable (e.g. on Streamlit Cloud)."""
+    try:
+        engine = create_engine(DB_URL)
+        with engine.connect():
+            pass
+        return engine
+    except Exception:
+        return None
 
 
 @st.cache_data
@@ -28,10 +35,21 @@ def run_query(sql):
     return pd.read_sql(sql, get_engine())
 
 
-st.title("🌍 Global Seismic Trends: Data-Driven Earthquake Insights")
-st.caption("USGS earthquakes, magnitude 4.5+, Nov 2021 – Oct 2026 · stored in MySQL")
+@st.cache_data
+def load_saved(path, **kwargs):
+    return pd.read_csv(path, **kwargs)
 
-df = run_query("SELECT * FROM earthquakes")
+
+ONLINE = get_engine() is None   # no MySQL -> use the saved MySQL results
+
+st.title("🌍 Global Seismic Trends: Data-Driven Earthquake Insights")
+st.caption("USGS earthquakes, magnitude 4.5+, Nov 2021 – Oct 2026 · stored in MySQL"
+           + (" · online view: results exported from MySQL" if ONLINE else " · live MySQL"))
+
+if ONLINE:
+    df = load_saved("data/clean_earthquakes.csv", parse_dates=["time", "updated"])
+else:
+    df = run_query("SELECT * FROM earthquakes")
 
 # ---------------- Sidebar filters ----------------
 st.sidebar.header("Filters")
@@ -91,7 +109,11 @@ with tab1:
 with tab2:
     choice = st.selectbox("Choose an analysis question", list(QUERIES))
     sql = QUERIES[choice]
-    result = run_query(sql)
+    if ONLINE:
+        number = list(QUERIES).index(choice) + 1
+        result = load_saved(f"data/query_results/q{number:02d}.csv")
+    else:
+        result = run_query(sql)
     st.dataframe(result, use_container_width=True)
     st.caption(f"{len(result)} rows")
 
