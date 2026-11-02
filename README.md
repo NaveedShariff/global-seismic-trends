@@ -2,6 +2,8 @@
 
 An end-to-end data project: **USGS API → Python (Pandas + Regex) cleaning → MySQL → 30 SQL analyses → Streamlit dashboard.**
 
+🔗 **Live dashboard:** https://global-seismic-trends-suxcksqpegf7ntsbu46rvb.streamlit.app/
+
 **Domain:** Disaster Management · Geoscience · Seismology
 **Skills:** Python for data analytics, Regex, SQL & RDBMS, Streamlit
 
